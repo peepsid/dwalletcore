@@ -1,8 +1,8 @@
-# WalletPack
+# DWalletJS
 
 This is a wallet building SDK which takes care of all of the heavy lifting for creating blockchain wallets.
 
-Currently being used in Scatter Desktop, Scatter Mobile, and Scatter Bridge.
+Currently being used in PeepsID Desktop, PeepsID Mobile, and PeepsID Bridge.
 
 
 
@@ -10,14 +10,14 @@ Currently being used in Scatter Desktop, Scatter Mobile, and Scatter Bridge.
 
 Install the core plus any blockchains you want to support
 ```
-npm i -S @walletpack/core @walletpack/eosio @walletpack/ethereum @walletpack/bitcoin @walletpack/tron
+npm i -S @dwalletjs/core @dwalletjs/arisen @dwalletjs/ethereum @dwalletjs/bitcoin @walletpack/tron
 ```
 
 ### Call initialize first.
 
 ```js
 
-import WalletPack from '@walletpack/core';
+import DWalletJS from '@dwalletjs/core';
 
 const eventListener = (type, data) => {
     console.log('event', type, data);
@@ -28,21 +28,21 @@ const eventListener = (type, data) => {
     }
 	console.log('event', type, data);
 };
-WalletPack.initialize(
+DWalletJS.initialize(
     // --------------------------------------------
     // blockchains & blockchain plugins
 	{
 		blockchains:{
-			EOSIO:'eos',
+			ARISEN:'rix',
 			ETH:'eth',
 			// TRX:'trx',
 			BTC:'btc',
 		},
 		plugins:[
-			require('@walletpack/eosio').default,
-			require('@walletpack/ethereum').default,
+			require('@dwalletjs/arisen').default,
+			require('@dwalletjs/ethereum').default,
 			// require('@walletpack/tron').default,
-			require('@walletpack/bitcoin').default,
+			require('@dwalletjs/bitcoin').default,
 		]
 	},
     // --------------------------------------------
@@ -103,7 +103,7 @@ store:{
         dappLogos:{},
         dappData:{},
         resources:{},
-        scatter:null,
+        peepsid:null,
         balances:{},
         prices:{},
         history:[],
@@ -117,13 +117,13 @@ store:{
 
 #### dispatch
 This is an action handler that pre-processing commits to the state.
-[An example of these are here](https://github.com/GetScatter/ScatterDesktop/blob/core-extrapolation/src/store/actions.js)
+[An example of these are here](https://github.com/peepsid/ScatterDesktop/blob/core-extrapolation/src/store/actions.js)
 (_Some of these could possibly be put into the core library_)
 
 #### commit
 **must be synchronous**
 This is the actual commiter to the state which changes state values.
-[An example of these are here](https://github.com/GetScatter/ScatterDesktop/blob/core-extrapolation/src/store/mutations.js)
+[An example of these are here](https://github.com/peepsid/ScatterDesktop/blob/core-extrapolation/src/store/mutations.js)
 
 
 
@@ -138,7 +138,7 @@ then process methods on it.
 
 ```js
 import PluginRepository from ...
-PluginRepository.plugin(Blockchains.EOSIO).method(...);
+PluginRepository.plugin(Blockchains.ARISEN).method(...);
 ```
 
 
@@ -150,12 +150,12 @@ PluginRepository.plugin(Blockchains.EOSIO).method(...);
 <br>
 
 Some constants for the docs below:
-- `$API = "https://api.get-scatter.com/v1/"`
+- `$API = "https://api.peepsid.com/v1/"`
 
 ## Services breakdown
-These are some of the important services in Scatter, and brief explanations of what they do and how to use them.
+These are some of the important services in PeepsID, and brief explanations of what they do and how to use them.
 
-**Note: All ScatterCore methods are static**.
+**Note: All PeepsIdCore methods are static**.
 
 
 ----------------------------
@@ -170,8 +170,8 @@ The flow is as follows.
 
 `app -> socket -> api handler -> openPopOut -> api handler -> socket -> app`
 
-[To see a live example of this happening see this](https://github.com/GetScatter/ScatterDesktop/blob/core-extrapolation/src/services/SocketService.js#L24)
-[And check out also the low level socket service](https://github.com/GetScatter/ScatterDesktop/blob/core-extrapolation/electron.js#L339)
+[To see a live example of this happening see this](https://github.com/peepsid/ScatterDesktop/blob/core-extrapolation/src/services/SocketService.js#L24)
+[And check out also the low level socket service](https://github.com/peepsid/ScatterDesktop/blob/core-extrapolation/electron.js#L339)
 
 
 
@@ -211,10 +211,10 @@ return Token.fromJson({
 PriceService.getTotal(BalanceService.totalBalances(false).totals)
 
 // Returns the total token balance
-return PriceService.getTotal(BalanceService.totalBalances(false).totals, null, false, state.scatter.settings.displayToken);
+return PriceService.getTotal(BalanceService.totalBalances(false).totals, null, false, state.peepsid.settings.displayToken);
 ```
 
-#### `PriceService.fiatSymbol(currency = StoreService.get().state.scatter.settings.displayCurrency)`
+#### `PriceService.fiatSymbol(currency = StoreService.get().state.peepsid.settings.displayCurrency)`
 Returns an ascii currency sign ($/¥/€/£) instead of a ticker (USD/CNY/EUR/etc).
 
 
@@ -223,11 +223,11 @@ Returns an ascii currency sign ($/¥/€/£) instead of a ticker (USD/CNY/EUR/et
 
 
 ### AppsService
-This service fills itself using the SingletonService which is instantiated once when opening a Scatter wallet.
+This service fills itself using the SingletonService which is instantiated once when opening a PeepsID wallet.
 All app data is available on `state.dappData`
 
 #### `AppsService.getAppData(origin)`
-Returns formatted data based on the applink (origin/fqdn) of the apps trying to interact with Scatter.
+Returns formatted data based on the applink (origin/fqdn) of the apps trying to interact with PeepsID.
 If the app doesn't exist on the `state.dappData` then it will return a formatted result regardless.
 
 ```js
@@ -253,7 +253,7 @@ Returns all the apps available with a given category.
 Returns all the apps available with a given search terms.
 
 #### `AppsService.linkedApps(terms = '', categoryFilter = null)`
-Returns all of the apps that are **linked** in the user's Scatter.
+Returns all of the apps that are **linked** in the user's PeepsID.
 These are apps that the user already has permissions for (My Apps).
 
 
