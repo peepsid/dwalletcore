@@ -1,12 +1,12 @@
 {
-  "name": "walletpack",
+  "name": "dwalletjs",
   "private": true,
   "scripts": {
     "postinstall": "lerna bootstrap",
     "build": "lerna exec -- babel --config-file ../../babel.config.js --out-dir dist lib && node scripts/copy-files",
     "links": "lerna exec -- yarn link",
     "publish": "node ./scripts/prepublish.js && lerna publish",
-    "testfile": "cross-env WALLETPACK_TESTING=true mocha --require @babel/register --require @babel/polyfill --exit --timeout 1000000",
+    "testfile": "cross-env DWALLETJS_TESTING=true mocha --require @babel/register --require @babel/polyfill --exit --timeout 1000000",
     "test": "npm run testfile \"./packages/**/__tests__/**/*.test.js\"",
     "pack": "webpack-cli --mode=production --display-error-details"
   },
